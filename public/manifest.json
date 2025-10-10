@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "YouTube Clone",
+  "name": "YouTube Clone - Video Streaming Platform",
+  "description": "A modern YouTube clone built with React and Material-UI",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,16 +11,23 @@
     {
       "src": "logo192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "maskable any"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "maskable any"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "orientation": "portrait-primary",
+  "theme_color": "#FF0000",
+  "background_color": "#0f0f0f",
+  "categories": ["entertainment", "video", "social"],
+  "lang": "en-US",
+  "scope": "/",
+  "prefer_related_applications": false
 }

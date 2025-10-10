@@ -1,4 +1,116 @@
-# Getting Started with Create React App
+# YouTube Clone - Advanced Video Streaming Platform
+
+A modern, feature-rich YouTube clone built with React, TypeScript, and Material-UI. This application demonstrates advanced React patterns, performance optimizations, and Progressive Web App (PWA) capabilities.
+
+## ✨ Key Features
+
+### 🎥 Core Functionality
+- **Video Streaming**: Browse and watch videos with full player controls
+- **Interactive Comments**: Threaded comment system with nested replies (up to 2 levels)
+- **User Engagement**: Like/dislike videos and comments with real-time count updates
+- **Responsive Design**: Fully responsive across desktop, tablet, and mobile devices
+
+### ⚡ Performance Optimizations
+- **Lazy Loading**: All pages are lazy-loaded using `React.lazy()` and `Suspense`
+- **Component Memoization**: Critical components wrapped with `React.memo`
+- **Infinite Scroll**: Custom `useInfiniteScroll` hook with Intersection Observer API
+- **Code Splitting**: Automatic code splitting for optimal bundle sizes
+
+### 📱 Progressive Web App (PWA)
+- **Offline Support**: Service worker for caching and offline functionality
+- **App-like Experience**: Standalone mode with custom theme colors
+- **Install Prompt**: Native install experience on supported devices
+- **Background Sync**: Offline action queuing for better UX
+
+### 🎨 User Interface
+- **Material-UI Components**: Consistent design system with YouTube-inspired styling
+- **Dark Theme**: YouTube-like dark mode interface
+- **Smooth Animations**: Fluid transitions and loading states
+- **Mobile-First**: Optimized for mobile devices with touch interactions
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 14+ and npm
+- Modern web browser with ES6+ support
+
+### Installation
+```bash
+# Clone the repository
+git clone <repository-url>
+cd new_youtube_clone
+
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+The app will be available at [http://localhost:3000](http://localhost:3000)
+
+### Building for Production
+```bash
+# Create optimized production build
+npm run build
+
+# Serve production build locally (optional)
+npx serve -s build
+```
+
+## 🏗️ Architecture & Design Patterns
+
+### Component Structure
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Header.tsx      # Navigation header
+│   ├── Sidebar.tsx     # Navigation sidebar
+│   ├── VideoCard.tsx   # Memoized video card component
+│   └── CommentsSection.tsx  # Threaded comment system
+├── pages/              # Lazy-loaded page components
+│   ├── Home.tsx        # Video grid with infinite scroll
+│   ├── Watch.tsx       # Video player with comments
+│   └── ...
+├── hooks/              # Custom React hooks
+│   └── useInfiniteScroll.ts  # Intersection Observer hook
+├── utils/              # Utility functions and mock data
+│   └── mockData.ts     # Mock API with realistic delays
+└── serviceWorkerRegistration.ts  # PWA service worker
+```
+
+### Key Technologies
+- **React 18**: Latest React features including Suspense and lazy loading
+- **TypeScript**: Type-safe development with strict typing
+- **Material-UI v6**: Modern component library with theming
+- **React Router v6**: Client-side routing with nested routes
+- **Intersection Observer**: Native browser API for infinite scroll
+
+## 🛠️ Custom Hooks & Utilities
+
+### useInfiniteScroll Hook
+```typescript
+const { isLoading, hasMore, error, lastElementRef } = useInfiniteScroll(
+  loadMoreData,
+  {
+    threshold: 0.5,
+    rootMargin: '200px',
+    enabled: true
+  }
+);
+```
+
+Features:
+- Intersection Observer API integration
+- Error handling and loading states
+- Configurable threshold and root margin
+- TypeScript support with full type safety
+
+### Mock API System
+- Realistic network delays (500-1000ms)
+- Comprehensive comment threading
+- User interaction simulation
+- Error scenario handling
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
