@@ -26,10 +26,13 @@ import {
   AccountCircle as ChannelIcon,
   Person as PersonIcon,
   ExitToApp as LogoutIcon,
+  LightMode as LightModeIcon,
+  DarkMode as DarkModeIcon,
 } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 import { getSearchSuggestions, SearchSuggestion, getCurrentUser, initializeDemoUser, User } from '../utils/mockData';
 import AuthModal from './AuthModal';
+import { useTheme } from '../context/ThemeContext';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -44,6 +47,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const navigate = useNavigate();
+  const { mode, colors, toggleTheme } = useTheme();
 
   // Initialize demo user and check auth state on component mount
   useEffect(() => {
@@ -141,10 +145,11 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
     <AppBar 
       position="sticky" 
       sx={{ 
-        backgroundColor: '#0F0F0F',
-        boxShadow: 'none',
-        borderBottom: '1px solid #303030',
+        background: colors.headerBg,
+        boxShadow: mode === 'dark' ? '0 2px 12px rgba(59, 130, 246, 0.1)' : '0 2px 8px rgba(0, 0, 0, 0.1)',
+        borderBottom: `1px solid ${colors.border}`,
         zIndex: 1400,
+        transition: 'all 0.3s ease',
       }}
     >
       <Toolbar sx={{ 
@@ -160,11 +165,11 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           <IconButton
             onClick={onMenuClick}
             sx={{
-              color: '#FFFFFF',
+              color: colors.primaryText,
               padding: '8px',
               marginRight: '8px',
               '&:hover': {
-                backgroundColor: '#272727',
+                background: 'rgba(59, 130, 246, 0.2)',
               },
             }}
           >
@@ -186,7 +191,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
               letterSpacing: '-0.5px',
             }}>
               <span style={{ color: '#FF0000' }}>You</span>
-              <span style={{ color: '#FFFFFF' }}>Tube</span>
+              <span style={{ color: colors.primaryText }}>Tube</span>
             </Box>
           </Link>
         </Box>
@@ -233,11 +238,11 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                   }}
                   sx={{
                     '& .MuiOutlinedInput-root': {
-                      backgroundColor: '#121212',
-                      border: '1px solid #303030',
+                      backgroundColor: mode === 'dark' ? '#121212' : '#F1F1F1',
+                      border: `1px solid ${colors.border}`,
                       borderRadius: '40px 0 0 40px',
                       padding: '0 16px',
-                      color: '#FFFFFF',
+                      color: colors.primaryText,
                       fontSize: '16px',
                       height: '40px',
                       transition: 'all 0.2s ease-in-out',
@@ -246,20 +251,20 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                       },
                       '& input': {
                         padding: '0',
-                        color: '#FFFFFF',
+                        color: colors.primaryText,
                         '&::placeholder': {
-                          color: '#909090',
+                          color: colors.secondaryText,
                           opacity: 1,
                         },
                       },
                       '&:hover': {
-                        borderColor: '#065fd4',
-                        backgroundColor: '#1A1A1A',
+                        borderColor: colors.primary,
+                        backgroundColor: mode === 'dark' ? '#1A1A1A' : '#E8E8E8',
                       },
                       '&.Mui-focused': {
-                        borderColor: '#065fd4',
+                        borderColor: colors.primary,
                         borderWidth: '2px',
-                        backgroundColor: '#1A1A1A',
+                        backgroundColor: mode === 'dark' ? '#1A1A1A' : '#E8E8E8',
                       },
                     },
                   }}
@@ -300,11 +305,11 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                 <Paper 
                   {...props} 
                   sx={{ 
-                    backgroundColor: '#212121',
-                    border: '1px solid #404040',
+                    backgroundColor: mode === 'dark' ? '#212121' : '#FFFFFF',
+                    border: `1px solid ${colors.border}`,
                     borderRadius: '12px',
                     marginTop: '8px',
-                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
+                    boxShadow: mode === 'dark' ? '0 4px 16px rgba(0, 0, 0, 0.3)' : '0 4px 16px rgba(0, 0, 0, 0.1)',
                     '& .MuiAutocomplete-listbox': {
                       padding: '8px 0',
                     },
@@ -316,8 +321,8 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             <IconButton
               onClick={() => handleSearchSubmit(searchQuery)}
               sx={{ 
-                backgroundColor: '#303030',
-                border: '1px solid #303030',
+                backgroundColor: mode === 'dark' ? '#303030' : '#E0E0E0',
+                border: `1px solid ${colors.border}`,
                 borderLeft: 'none',
                 borderRadius: '0 40px 40px 0',
                 padding: '8px 20px',
@@ -325,12 +330,12 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                 minWidth: '64px',
                 transition: 'all 0.2s ease-in-out',
                 '&:hover': {
-                  backgroundColor: '#404040',
-                  borderColor: '#065fd4',
+                  backgroundColor: mode === 'dark' ? '#404040' : '#D0D0D0',
+                  borderColor: colors.primary,
                 },
               }}
             >
-              <SearchIcon sx={{ color: '#FFFFFF', fontSize: '20px' }} />
+              <SearchIcon sx={{ color: colors.primaryText, fontSize: '20px' }} />
             </IconButton>
           </Box>
         </Box>
@@ -432,15 +437,35 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           minWidth: '170px',
           justifyContent: 'flex-end',
         }}>
+          {/* Theme Toggle Button */}
+          <IconButton
+            onClick={toggleTheme}
+            sx={{
+              color: colors.primaryText,
+              padding: '8px',
+              background: colors.activeGradient,
+              border: `1px solid ${colors.border}`,
+              borderRadius: '50%',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: colors.buttonGradient,
+                transform: 'rotate(180deg)',
+                boxShadow: `0 4px 12px ${mode === 'dark' ? 'rgba(59, 130, 246, 0.4)' : 'rgba(59, 130, 246, 0.3)'}`,
+              },
+            }}
+          >
+            {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+          </IconButton>
+
           {currentUser ? (
             <>
               <Link to="/upload" style={{ textDecoration: 'none' }}>
                 <IconButton
                   sx={{
-                    color: '#FFFFFF',
+                    color: colors.primaryText,
                     padding: '8px',
                     '&:hover': {
-                      backgroundColor: '#272727',
+                      backgroundColor: 'rgba(59, 130, 246, 0.2)',
                     },
                   }}
                 >
@@ -450,10 +475,10 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
               
               <IconButton
                 sx={{
-                  color: '#FFFFFF',
+                  color: colors.primaryText,
                   padding: '8px',
                   '&:hover': {
-                    backgroundColor: '#272727',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
                   },
                 }}
               >
@@ -485,11 +510,13 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                 onClose={handleUserMenuClose}
                 PaperProps={{
                   sx: {
-                    backgroundColor: '#282828',
-                    color: '#FFFFFF',
+                    backgroundColor: mode === 'dark' ? '#282828' : '#FFFFFF',
+                    color: colors.primaryText,
                     borderRadius: '8px',
                     marginTop: '8px',
                     minWidth: '200px',
+                    border: `1px solid ${colors.border}`,
+                    boxShadow: mode === 'dark' ? '0 4px 16px rgba(0, 0, 0, 0.3)' : '0 4px 16px rgba(0, 0, 0, 0.1)',
                   },
                 }}
               >
