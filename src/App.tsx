@@ -12,6 +12,9 @@ import { CssBaseline, Box, CircularProgress } from '@mui/material';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
+// Theme Context
+import { ThemeProvider as CustomThemeProvider, useTheme } from './context/ThemeContext';
+
 // Lazy-loaded Pages
 const Home = React.lazy(() => import('./pages/Home'));
 const Watch = React.lazy(() => import('./pages/Watch'));
@@ -89,6 +92,7 @@ const theme = createTheme({
 const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const handleResize = () => {
@@ -117,7 +121,7 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <Box className="flex flex-col h-screen bg-youtube-dark">
+    <Box className="flex flex-col h-screen" sx={{ background: colors.gradientBg }}>
       <Header onMenuClick={handleMenuClick} />
       
       <Box className="flex flex-1 overflow-hidden">
@@ -130,9 +134,8 @@ const Layout: React.FC = () => {
         <Box 
           component="main" 
           sx={{
-            marginLeft: isMobile ? 0 : (sidebarOpen ? '240px' : '80px'),
             transition: 'margin-left 0.2s ease-in-out',
-            backgroundColor: '#0F0F0F',
+            backgroundColor: colors.primaryBg,
             flex: 1,
             overflow: 'auto',
             minHeight: 0,
@@ -147,23 +150,25 @@ const Layout: React.FC = () => {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="watch/:id" element={<Watch />} />
-              <Route path="search" element={<Search />} />
-              <Route path="profile/:id" element={<Profile />} />
-              <Route path="upload" element={<Upload />} />
-              <Route path="channel/:channelName" element={<Channel />} />
-            </Route>
-          </Routes>
-        </Suspense>
-      </Router>
-    </ThemeProvider>
+    <CustomThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path="watch/:id" element={<Watch />} />
+                <Route path="search" element={<Search />} />
+                <Route path="profile/:id" element={<Profile />} />
+                <Route path="upload" element={<Upload />} />
+                <Route path="channel/:channelName" element={<Channel />} />
+              </Route>
+            </Routes>
+          </Suspense>
+        </Router>
+      </ThemeProvider>
+    </CustomThemeProvider>
   );
 }
 
